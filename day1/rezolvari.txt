@@ -1,0 +1,102 @@
+CREATE DATABASE IF NOT EXISTS info;
+
+USE info;
+
+CREATE TABLE IF NOT EXISTS country(
+    id Varchar(255) PRIMARY KEY,
+    country_details_id INT, 
+    FOREIGN KEY (country_details_id) REFERENCES country_details(id)
+) engine=innodb;
+
+CREATE TABLE IF NOT EXISTS country_details(
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    population INT, 
+    climate Varchar(255)
+) engine=innodb;
+
+CREATE TABLE IF NOT EXISTS city(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name Varchar(255) UNIQUE,
+    countryid Varchar(255),
+    FOREIGN KEY (countryid) REFERENCES country(id)
+) engine=innodb;
+
+CREATE TABLE IF NOT EXISTS resident(
+	id INT AUTO_INCREMENT PRIMARY KEY, 
+    name Varchar(255),
+    birth_date DATE
+) engine=innodb;
+
+CREATE TABLE IF NOT EXISTS city_resident (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    city_id INT,     
+    resident_id INT,  
+    FOREIGN KEY (city_id) REFERENCES city(id),
+    FOREIGN KEY (resident_id) REFERENCES resident(id)
+) engine=innodb;
+
+
+INSERT INTO country(id, country_details_id) VALUES ("Romania", 1);
+INSERT INTO country(id, country_details_id) VALUES ("Moldova", 2);
+INSERT INTO country(id, country_details_id) VALUES ("Germania", 3);
+INSERT INTO country(id, country_details_id) VALUES ("Franta", 4);
+
+INSERT INTO country_details(population, climate) VALUES (19186201, "temperate continental");
+INSERT INTO country_details(population, climate) VALUES (2998235", temperate continental");
+INSERT INTO country_details(population, climate) VALUES (80399300, "temperata");
+INSERT INTO country_details(population, climate) VALUES (67063703, "temperata");
+
+INSERT INTO resident(birth_date, name) VALUES ("1999-09-02", "John Doe");
+INSERT INTO resident(birth_date, name) VALUES ("2000-09-02", "Gabriela Iacomchi");
+INSERT INTO resident(birth_date, name) VALUES ("2000-03-12", "Popovici Sandu");
+INSERT INTO resident(birth_date, name) VALUES ("1957-09-02", "Mihai Popescu");
+
+INSERT INTO city(name, countryid) VALUES("Cluj-Napoca", "Romania");
+INSERT INTO city(name, countryid) VALUES("Chisinau", "Moldova");
+INSERT INTO city(name, countryid) VALUES("Berlin", "Germania");
+INSERT INTO city(name, countryid) VALUES("Paris", "Franta");
+INSERT INTO city(name, countryid) VALUES("Rezina", "Moldova");
+INSERT INTO city(name, countryid) VALUES("Galati", "Romania");
+
+INSERT INTO city_resident(city_id, resident_id) VALUES(3, 1); 
+INSERT INTO city_resident(city_id, resident_id) VALUES(5, 1); 
+INSERT INTO city_resident(city_id, resident_id) VALUES(2, 2); 
+INSERT INTO city_resident(city_id, resident_id) VALUES(1, 2); 
+INSERT INTO city_resident(city_id, resident_id) VALUES(6, 3); 
+INSERT INTO city_resident(city_id, resident_id) VALUES(4, 3); 
+INSERT INTO city_resident(city_id, resident_id) VALUES(4, 1); 
+
+1)
+SELECT * FROM city;
+2)
+SELECT name FROM resident;
+3)
+SELECT name FROM city WHERE name LIKE 'r%' OR name LIKE 'g%' OR name LIKE 'm%' ORDER BY name DESC;
+4)
+SELECT country.id, country_details.population 
+FROM country JOIN country_details 
+ON country.country_details_id = country_details.id
+AND country_details.population > 1000000;
+5)
+SELECT country.id, country_details.population 
+FROM country 
+JOIN country_details 
+ON country.country_details_id = country_details.id 
+WHERE population > 500000 AND population < 1000000 AND population%2 = 0;
+6)
+SELECT name FROM resident 
+WHERE birth_date < "2005-01-01" AND birth_date > "1999-01-01";
+7)
+SELECT resident.name, city.name, country.id, country_details.population, country_details.climate
+FROM resident
+JOIN city_resident
+JOIN city
+JOIN country
+JOIN country_details
+ON city_resident.resident_id = resident.id
+	AND city_resident.city_id = city.id
+    AND city.countryid = country.id
+    AND country.country_details_id = country_details.id
+WHERE resident.name = 'John Doe'
+    
+    
