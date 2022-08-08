@@ -18,8 +18,6 @@ Create table resident(
 	id int primary key,
 	name varchar(40),
 	birth_date date,
-	country_id varchar(15),
-	Foreign key(country_id) references country(id)
 );
 Create table resident_per_city(
 	city_id int,
@@ -28,3 +26,10 @@ Create table resident_per_city(
 	Foreign key(city_id) references country(id),
 	Foreign key(resident_id) references country(id)
 );
+
+insert into country VALUES
+("Belgia"),
+("Croatia"),
+("Bulgaria"),
+(""),
+("Croatia"),
