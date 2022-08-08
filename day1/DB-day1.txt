@@ -1,0 +1,72 @@
+create table City( 
+    id int(6) PRIMARY KEY,
+    name varchar(255),
+    country_id varchar(255),
+    FOREIGN KEY (country_id) REFERENCES Country(id)
+);
+
+create table Resident (
+    id int(6) PRIMARY KEY AUTO_INCREMENT,
+    name varchar(255),
+    birthdate date,
+    city_id int(6),
+    FOREIGN KEY (city_id) REFERENCES City(id)
+    );
+
+create table Country ( 
+    id varchar(255) PRIMARY KEY default 'XX'
+);
+
+create table Country_details ( 
+    id int(6) PRIMARY KEY auto_increment,
+    country_id varchar(255),
+    population int(6),
+    climate_type varchar(255),
+    FOREIGN KEY (country_id) REFERENCES Country(id)
+);
+
+create table city_resident (
+    id int(6) primary key,
+    city_id int(6),
+    FOREIGN Key (city_id) REFERENCES City(id),
+    resident_id int(6),
+    FOREIGN Key (resident_id) REFERENCES Resident(id)
+  );
+        
+insert into Country values ('RO');
+insert into Country values ('DE');
+insert into Country values ('HU');
+insert into Country values ('FR');
+
+insert into country_details VALUES (null, 'RO', 19000000, "temperat continentala");
+insert into country_details VALUES (null, 'DE', 83000000,"temperata");
+insert into country_details VALUES (null, 'FR', 67400000,"temperata");
+insert into country_details VALUES (null, 'HU', 10000000,"temperata");
+
+
+insert into city VALUES (null, "Cluj-Napoca", 'RO');
+insert into city VALUES (null, "Satu Mare", 'RO');
+insert into city VALUES (null, "Nyiregyhaza", 'HU');
+insert into city VALUES (null, "Budapesta", 'HU');
+insert into city VALUES (null, "Paris", 'FR');
+insert into city VALUES (null, "Marseile", 'FR');
+insert into city VALUES (null, "Berlin", 'DE');
+
+
+insert into resident VALUES (null, "Gabriela Torzsa", '2001-02-06' ,1);
+insert into resident VALUES (null, "Mihaela Petricele", '1999-02-06' ,2);
+insert into resident VALUES (null, "Tudor Manole", '2001-03-06' ,3);
+insert into resident VALUES (null, "Cristian Popescu", '2000-07-05', 4);
+insert into resident VALUES (null, "Mihai Tudor", '2000-01-20', 5);
+insert into resident VALUES (null, "Andreea Maior", '2000-05-20', 6);
+insert into resident VALUES (null, "Ionut Tiplea", '2000-10-22', 7);
+
+INSERT into city_resident VALUES (null, 1 ,1);
+INSERT into city_resident VALUES (null, 1, 2);
+INSERT into city_resident VALUES (null, 3 ,1);
+INSERT into city_resident VALUES (null, 5, 3);
+INSERT into city_resident VALUES (null, 6, 4);
+INSERT into city_resident VALUES (null, 7, 5);
+INSERT into city_resident VALUES (null, 4, 6);
+INSERT into city_resident VALUES (null, 2, 7);
+
