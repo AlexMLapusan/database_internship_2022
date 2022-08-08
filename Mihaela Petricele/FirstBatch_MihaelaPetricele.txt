@@ -1,0 +1,28 @@
+
+CREATE TABLE country(id varchar(255) PRIMARY KEY DEFAULT 'XX')
+CREATE TABLE country_details(id int PRIMARY KEY, population int, climate-type varchar(255), country_id varchar(255), FOREIGN KEY(country_id) REFERENCES country(id))
+CREATE TABLE city (id int PRIMARY KEY, name varchar(255) UNIQUE, country_id varchar(255), FOREIGN KEY (country_id) REFERENCES country(id)) 
+CREATE TABLE resident (id int PRIMARY KEY, name varchar(255), birth_date DATE ) 
+CREATE TABLE city_resident(id int PRIMARY KEY, city_id int, resident_id int, FOREIGN KEY (city_id) REFERENCES city(id), FOREIGN KEY (resident_id) REFERENCES resident(id))
+
+INSERT INTO country VALUES ( 'RO')
+INSERT INTO country VALUES ( 'DE')
+INSERT INTO country VALUES ( 'CH')
+INSERT INTO country VALUES ( 'FR')
+
+INSERT INTO country_details VALUES (null,19000000, 'temperat-continentala de tranzitie', 'RO')
+INSERT INTO country_details VALUES (null,83000000, 'temperata','DE')
+INSERT INTO country_details VALUES (null,8000000, 'temperata','CH')
+INSERT INTO country_details VALUES (null,67000000, 'temperat-maritima','FR')
+
+INSERT INTO city VALUES (null,'Cluj-Napoca','RO')
+INSERT INTO city VALUES (null,'Berlin','DE')
+INSERT INTO city VALUES (null,'Geneva','CH')
+INSERT INTO city VALUES (null,'Paris','FR')
+
+INSERT INTO resident VALUES (null, 'Mihaela Petricele', '1999-11-03')
+INSERT INTO resident VALUES (null, 'Torzsa Gabriela', '2001-02-06')
+
+INSERT INTO city_resident VALUES(null, 1,2)
+INSERT INTO city_resident VALUES(null, 1,1)
+INSERT INTO city_resident VALUES(null, 3,2)
