@@ -1,0 +1,10 @@
+1. SELECT * FROM city
+2. SELECT name FROM resident ORDER BY name ASC
+3. SELECT * FROM city WHERE name LIKE 'r%' OR name LIKE 'g%' OR name LIKE 'm%'
+4. SELECT *  FROM country_details WHERE population > 1000000
+5. SELECT *  FROM country_details WHERE population BETWEEN 500000 AND 1000000 AND population MOD 2 = 0
+6. SELECT * FROM resident WHERE YEAR(birth_date) BETWEEN 1999 AND 2005;
+7. SELECT cd.id, cd.population, cd.climate_type FROM city c INNER JOIN city_resident cr ON c.id =cr.city_id INNER JOIN resident r 
+ON r.id = cr.resident_id INNER JOIN country co ON co.id = c.country_id INNER JOIN country_details cd ON cd.country_id = co.id
+WHERE r.name = 'Mihaela Petricele'
+
