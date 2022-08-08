@@ -1,0 +1,97 @@
+CREATE DATABASE internship_tm;
+
+CREATE TABLE IF NOT EXISTS country(
+    id Varchar(255) PRIMARY KEY,
+    country_details INT, 
+    FOREIGN KEY (country_details) REFERENCES country_details(id)
+) engine=innodb;
+
+CREATE TABLE IF NOT EXISTS country_details(
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    population INT, 
+    climate Varchar(255)
+) engine=innodb;
+
+CREATE TABLE IF NOT EXISTS city(
+    id Int AUTO_INCREMENT PRIMARY KEY,
+    name Varchar(255) UNIQUE,
+    countryid Varchar(255),
+    FOREIGN KEY (countryid) REFERENCES country(id)
+) engine=innodb;
+
+CREATE TABLE IF NOT EXISTS resident(
+    id INT AUTO_INCREMENT PRIMARY KEY, 
+    name Varchar(255),
+    birth_date DATE
+) engine=innodb;
+
+CREATE TABLE IF NOT EXISTS city_resident (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    city_id INT,     
+    resident_id INT,  
+    FOREIGN KEY (city_id) REFERENCES city(id),
+    FOREIGN KEY (resident_id) REFERENCES resident(id)
+) engine=innodb;
+INSERT INTO country(id) VALUES ("RO");
+INSERT INTO country(id) VALUES ("DE");
+INSERT INTO country(id) VALUES ("MD");
+INSERT INTO country(id) VALUES ("FR");
+
+INSERT INTO country_details(climate, population) VALUES ("temperat continental", 19186201);
+INSERT INTO country_details(climate, population) VALUES ("temperat", 83149300);
+INSERT INTO country_details(climate, population) VALUES ("temperat continental", 2640438);
+INSERT INTO country_details(climate, population) VALUES ("temperat", 67063703);
+
+INSERT INTO resident(birth_date, name, surname) VALUES ("2000-09-03", "John", "Doe");
+INSERT INTO resident (birth_date, name, surname) VALUES("1980-02-02","Ion", "Popescu");
+INSERT INTO resident(birth_date, name, surname) VALUES ("2000-09-03", "Mihai", "Tamas");
+INSERT INTO resident (birth_date, name, surname) VALUES("1980-02-02","Eugeniu", "Simon");
+
+INSERT INTO city(countryid, name) VALUES ("RO","Cluj-Napoca");
+INSERT INTO city (countryid, name) VALUES ("RO","Petrosani");
+INSERT INTO city(countryid, name) VALUES ("DE","Berlin");
+INSERT INTO city (countryid, name) VALUES ("DE","Munchen");
+INSERT INTO city(countryid, name) VALUES ("MD","Chisinau");
+INSERT INTO city (countryid, name) VALUES ("MD","Balti");
+INSERT INTO city(countryid, name) VALUES ("FR","Paris");
+INSERT INTO city (countryid, name) VALUES ("FR","Marsilia");
+
+#################################################################################
+
+SELECT * FROM city;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SELECT name from resident ORDER BY name ASC;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SELECT * FROM city WHERE name LIKE "r%" OR name LIKE "g%" OR name LIKE "m%" ORDER BY name DESC;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SELECT country.id, country_details.population from country INNER JOIN country_details on country_details.id = country.country_details WHERE population > 1000000;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SELECT country.id, country_details.population from country INNER JOIN country_details on country_details.id = country.country_details WHERE population > 500000 and population < 1000000 and population % 2 = 0;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SELECT name, surname FROM resident WHERE birth_date > "1999-01-01" AND birth_date < "2005-01-01";
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+SELECT resident.name, city_resident.city_id, city.name, country.id, country_details.population, country_details.climate
+FROM resident
+JOIN city_resident
+JOIN city
+JOIN country
+JOIN country_details
+ON city_resident.resident_id = resident.id
+    AND city_resident.city_id = city.id
+    AND city.countryid = country.id
+    AND country.country_details = country_details.id
+WHERE resident.name = 'John'
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
