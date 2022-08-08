@@ -1,0 +1,77 @@
+SELECT city.name from city;
+
+SELECT resident.name from resident
+ORDER BY resident.name ASC;
+
+SELECT lower(city.name) FROM city WHERE
+lower(city.name) LIKE 'c%' OR lower(city.name) LIKE 'l%' OR lower(city.name) LIKE 'm%'
+GROUP BY city.name DESC;
+
+SELECT country_details.country_id, country_details.population FROM country_details WHERE
+country_details.population >= '1000000';
+
+SELECT country_details.country_id, country_details.population FROM country_details WHERE
+country_details.population >= '500000' AND country_details.population <= '1000000' AND MOD(country_details.population, 2) = 0;
+
+SELECT * FROM resident WHERE
+YEAR(resident.birth_date) >= '1999' AND YEAR(resident.birth_date) <= '2005';
+
+SELECT country_details.id, country_details.population, country_details.climate, country_details.country_id AS 'country' FROM country_details
+JOIN country ON country_details.country_id = country.id
+JOIN city ON city.country_id = country.id
+JOIN resident_city ON city.id = resident_city.city_id
+JOIN resident ON resident_city.resident_id = resident.id
+WHERE resident.name = 'Jimmy';
+
+ALTER TABLE country
+ADD official_language varchar(100) DEFAULT 'none';
+
+UPDATE country SET country.id = concat('_', country.id);
+
+SELECT country_details.country_id, country_details.population FROM country_details WHERE
+country_details.climate = 'temperate';
+
+SELECT country_details.country_id, country_details.population FROM country_details 
+ORDER BY country_details.population DESC
+LIMIT 1;
+
+SELECT country.id, COUNT(country.id) FROM country
+JOIN city ON city.country_id = country.id
+JOIN resident_city ON resident_city.city_id = city.id
+JOIN resident ON resident.id = resident_city.resident_id
+GROUP BY country.id;
+
+SELECT country.id, COUNT(country.id) AS CNT FROM country
+JOIN city ON city.country_id = country.id
+JOIN resident_city ON resident_city.city_id = city.id
+JOIN resident ON resident.id = resident_city.resident_id
+GROUP BY country.id
+ORDER BY CNT DESC
+LIMIT 1;
+
+CREATE VIEW residents_per_country AS
+SELECT country.id, COUNT(country.id) as 'CNT' FROM country
+JOIN city ON city.country_id = country.id
+JOIN resident_city ON resident_city.city_id = city.id
+JOIN resident ON resident.id = resident_city.resident_id
+GROUP BY country.id;
+
+SELECT * FROM residents_per_country
+WHERE residents_per_country.CNT >= (
+    SELECT AVG(residents_per_country.CNT) FROM residents_per_country
+);
+
+SELECT * FROM resident
+ORDER BY resident.birth_date ASC
+LIMIT 1;
+
+SELECT resident.name, resident.birth_date, country_details.climate from country_details
+JOIN country ON country.id = country_details.country_id
+JOIN city ON country.id = city.country_id
+JOIN resident_city ON city.id = resident_city.city_id
+JOIN resident ON resident.id = resident_city.resident_id
+WHERE resident_city.resident_id = (
+    SELECT resident.id FROM resident
+	ORDER BY resident.birth_date ASC
+	LIMIT 1
+);

@@ -1,0 +1,68 @@
+use info;
+
+CREATE TABLE if NOT EXISTS country(
+    id VARCHAR(30) PRIMARY KEY DEFAULT 'XX'
+    );
+    
+CREATE TABLE if NOT EXISTS country_details(
+    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    population INT,
+    climate VARCHAR(30),
+    country_id VARCHAR(30),
+    FOREIGN KEY (country_id) REFERENCES country(id)
+    );
+    
+CREATE TABLE if NOT EXISTS city(
+    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30) UNIQUE,
+    country_id VARCHAR(30),
+    FOREIGN KEY (country_id) REFERENCES country(id)
+    );
+    
+CREATE TABLE if NOT EXISTS resident(
+    id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    name VARCHAR(30),
+    birth_date DATE
+    );
+    
+CREATE TABLE if NOT EXISTS resident_city(
+    city_id INT,
+    resident_id INT,
+    PRIMARY KEY (city_id, resident_id),
+    FOREIGN KEY (city_id) REFERENCES city(id),
+    FOREIGN KEY (resident_id) REFERENCES resident(id)
+    );
+
+INSERT INTO `country` (`id`) VALUES ('RO');
+INSERT INTO `country` (`id`) VALUES ('GB');
+INSERT INTO `country` (`id`) VALUES ('BG');
+INSERT INTO `country` (`id`) VALUES ('DE');
+
+INSERT INTO `country_details` (`id`, `population`, `climate`, `country_id`) VALUES (NULL, '19200000', 'continental', 'RO');
+INSERT INTO `country_details` (`id`, `population`, `climate`, `country_id`) VALUES (NULL, '67220000', 'temperate', 'GB');
+INSERT INTO `country_details` (`id`, `population`, `climate`, `country_id`) VALUES (NULL, '6927000', 'temperate-continental', 'BG');
+INSERT INTO `country_details` (`id`, `population`, `climate`, `country_id`) VALUES (NULL, '83240000', 'temperate', 'DE');
+
+INSERT INTO `resident` (`id`, `name`, `birth_date`) VALUES (NULL, 'Razvan', '1999-02-08');
+INSERT INTO `resident` (`id`, `name`, `birth_date`) VALUES (NULL, 'Mihai', '1997-04-12');
+INSERT INTO `resident` (`id`, `name`, `birth_date`) VALUES (NULL, 'Petru', '1990-08-24');
+INSERT INTO `resident` (`id`, `name`, `birth_date`) VALUES (NULL, 'Maria', '1979-12-25');
+INSERT INTO `resident` (`id`, `name`, `birth_date`) VALUES (NULL, 'Vasile', '2005-01-01');
+
+INSERT INTO `city` (`id`, `name`, `country_id`) VALUES (NULL, 'Cluj-Napoca', 'RO');
+INSERT INTO `city` (`id`, `name`, `country_id`) VALUES (NULL, 'Berlin', 'DE');
+INSERT INTO `city` (`id`, `name`, `country_id`) VALUES (NULL, 'Londra', 'GB');
+
+INSERT INTO `resident_city` (`city_id`, `resident_id`) VALUES ('3', '2');
+INSERT INTO `resident_city` (`city_id`, `resident_id`) VALUES ('4', '3');
+INSERT INTO `resident_city` (`city_id`, `resident_id`) VALUES ('4', '4');
+INSERT INTO `resident_city` (`city_id`, `resident_id`) VALUES ('5', '5');
+INSERT INTO `resident_city` (`city_id`, `resident_id`) VALUES ('3', '6');
+
+SELECT
+  TABLE_NAME,COLUMN_NAME,CONSTRAINT_NAME, REFERENCED_TABLE_NAME,REFERENCED_COLUMN_NAME
+FROM
+  INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE
+  REFERENCED_TABLE_SCHEMA = 'database_name' AND
+  REFERENCED_TABLE_NAME = 'tabel_name';
