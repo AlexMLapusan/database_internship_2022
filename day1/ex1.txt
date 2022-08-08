@@ -50,3 +50,12 @@ INSERT INTO city_resident VALUES (NULL, 1, 1);
 INSERT INTO city_resident VALUES (NULL, 2, 2);
 INSERT INTO city_resident VALUES (NULL, 3, 3);
 INSERT INTO city_resident VALUES (NULL, 1, 4);
+
+INSERT INTO country VALUES ("FR");
+INSERT INTO country_details VALUES (NULL, 320000, "clima ok", "FR");
+
+INSERT INTO country VALUES ("GB");
+INSERT INTO country_details VALUES (NULL, 250005, "climat ploios", "GB");
+
+INSERT INTO country VALUES ("LE");
+INSERT INTO country_details VALUES (NULL, 786002, "climat racoros", "LE");

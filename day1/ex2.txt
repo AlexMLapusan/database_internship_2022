@@ -43,3 +43,8 @@ WHERE climate_type LIKE "clima temperat%";
 SELECT countryID, population
 FROM country_details
 HAVING population = (select max(population) from country_details);
+
+select countryId, population
+from country_details
+order by population desc
+limit 1;
