@@ -70,3 +70,14 @@ INSERT into city_resident VALUES (null, 7, 5);
 INSERT into city_resident VALUES (null, 4, 6);
 INSERT into city_resident VALUES (null, 2, 7);
 
+// exercitii 
+1. select * from city;
+2. select name from resident order by name asc;
+3. select name from city where name like 'S%' or name like 'C%' or name like 'B%';
+4. select * from country_details where population > 1000000;
+5. select * from country_details where population BETWEEN 500000 and 1000000 and population mod 2 = 0;
+6. select * from resident where year(birthdate) BETWEEN 1999 and 2005;
+7. 
+
+
+
