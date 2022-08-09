@@ -1,0 +1,53 @@
+insert into show_table VALUES (null, "Friends", 8.9, '1994-09-22');
+insert into show_table VALUES (null, "Family Guy", 8.2, '1999-01-31');
+insert into show_table VALUES (null, "Game of Thrones", 9.2, '2011-04-17');
+insert into show_table VALUES (null, "The Big Bang Theory", 8.2, '2007-09-24');
+insert into show_table VALUES (null, "Gothem", 7.8, '2014-09-22', 1, 2);
+insert into show_table VALUES (null, "House of Cards", null , '2013-02-01', 1, 2);
+insert into show_table VALUES (null, "Lucifer", null , '2014-02-01', 3, 2);
+
+insert into director VALUES(null, "David Crane", '1957-08-13', 2); 
+insert into director VALUES(null, "Seth MacFarlane", '1973-10-26', 1);
+insert into director VALUES(null, "Alan Taylor", '1959-01-13', 2);
+insert into director VALUES(null, "Chuck Lorre", '1952-10-18', 2);
+
+insert into show_genre VALUES (null, 1, 1);
+insert into show_genre VALUES (null, 2, 1);
+insert into show_genre VALUES (null, 3, 2);
+insert into show_genre VALUES (null, 3, 3);
+insert into show_genre VALUES (null, 3, 4);
+insert into show_genre VALUES (null, 4, 1);
+insert into show_genre VALUES (null, 5, 4);
+
+insert into genre VALUES (null, "comedy", "haha");
+insert into genre VALUES (null, "drama", "omg");
+insert into genre VALUES (null, "romance", "this is lovely..");
+insert into genre VALUES (null, "action", "fight and kill");
+
+
+INSERT into streaming_platform VALUES (null, "HBO", "hbo.com");
+INSERT into streaming_platform VALUES (null, "Netflix", "netflix.com");
+INSERT into streaming_platform VALUES (null, "Fox", "fox.com");
+
+Queries: 
+1. select name from show_table ORDER BY rating DESC, name ASC limit 3 offset 3;
+2. select name from show_table where name like "G%" and NOT name like "%ame of thrones"
+3. select count(id), rating from show_table GROUP by rating;
+4.
+5. select show_table.name from show_table INNER join show_genre on show_table.id=show_genre.id_show INNER join genre on show_genre.id_genre=genre.id and genre.name="comedy"
+6. delete from genre WHERE name="drama"
+7. yes, BUT ONLY before a commit is done. Can't rollback data that has been commited in the db with the help of commit kewword
+8. select show_table.name, truncate(show_table.rating+1, 2) from show_table inner join show_genre on show_table.id = show_genre.id_show INNER join genre on genre.id=show_genre.id_genre and genre.name="romance"
+9. select name, shows_directed from director where shows_directed>1;
+10. 
+11. select name, birthdate, shows_directed from director order by shows_directed, birthdate, name;
+12. select streaming_platform.name, count(streaming_platform.id) from streaming_platform INNER JOIN show_table on streaming_platform.id=show_table.id_platform GROUP by streaming_platform.name
+13. select concat('The Director ', director.name, ' aged ', timestampdiff(year, director.birthdate, curdate()), ' released ', show_table.name, ' in ', show_table.release_date) as column_ from show_table INNER JOIN director on show_table.id_director=director.id 
+	where ( select AVG(timestampdiff(year, director.birthdate, curdate())) from director) > timestampdiff(year, director.birthdate, curdate()) ORDER BY show_table.release_date;
+14. select genre.name, streaming_platform.name, COUNT(streaming_platform.name) as counts from show_table INNER JOIN genre INNER JOIN show_genre inner join streaming_platform on genre.id=show_genre.id_genre 
+	and show_genre.id_show=show_table.id and streaming_platform.id=show_table.id_platform GROUP by genre.name, streaming_platform.name
+15. select name, rating, timestampdiff(year, release_date, curdate()) as age from show_table order by if(rating is not null, rating, age)
+
+
+
+
