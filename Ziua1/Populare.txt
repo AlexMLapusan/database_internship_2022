@@ -1,0 +1,25 @@
+use info;
+
+INSERT INTO country(id) VALUES ("RO");
+INSERT INTO country(id) VALUES ("DE");
+INSERT INTO country(id) VALUES ("SP");
+INSERT INTO country(id) VALUES ("FR");
+
+INSERT INTO country_details(climate_type, population) VALUES ("temperat continental", 19186201);
+INSERT INTO country_details(climate_type, population) VALUES ("temperat", 83149300);
+INSERT INTO country_details(climate_type, population) VALUES ("temperat continental", 2640438);
+INSERT INTO country_details(climate_type, population) VALUES ("temperat", 67063703);
+
+INSERT INTO resident(birth_date, name) VALUES ("2000-05-07", "John Doe");
+INSERT INTO resident (birth_date, name) VALUES("1900-02-02","Ion Popescu");
+INSERT INTO resident(birth_date, name) VALUES ("2000-05-03", "Marcel Ionescu");
+INSERT INTO resident (birth_date, name) VALUES("1900-02-07","Mirela Crina");
+
+INSERT INTO city(country, name) VALUES ("RO","Cluj-Napoca");
+INSERT INTO city (country, name) VALUES ("RO","Petrosani");
+INSERT INTO city(country, name) VALUES ("DE","Berlin");
+INSERT INTO city (country, name) VALUES ("DE","Munchen");
+INSERT INTO city(country, name) VALUES ("SP","Madrid");
+INSERT INTO city (country, name) VALUES ("SP","Balti");
+INSERT INTO city(country, name) VALUES ("FR","Paris");
+INSERT INTO city (country, name) VALUES ("FR","Marsilia")

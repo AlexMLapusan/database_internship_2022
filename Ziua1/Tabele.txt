@@ -1,0 +1,37 @@
+DROP DATABASE IF EXISTS info;
+CREATE DATABASE info;
+
+USE info;
+
+CREATE TABLE IF NOT EXISTS Country(
+	id VARCHAR(255) PRIMARY KEY,
+    country_details VARCHAR(255),
+    FOREIGN KEY (country_details) REFERENCES Country_details(id)
+);
+
+CREATE TABLE IF NOT EXISTS Country_details(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    population INT,
+    climate_type VARCHAR (255)
+);
+
+CREATE TABLE IF NOT EXISTS City(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR (255) UNIQUE,
+    country VARCHAR(255),
+    FOREIGN KEY (country) REFERENCES Country(id)
+);
+
+CREATE TABLE IF NOT EXISTS Resident(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255),
+    birth_date DATE
+);
+
+CREATE TABLE IF NOT EXISTS Parting(
+	id INT PRIMARY KEY AUTO_INCREMENT,
+	city_id INT,
+    resident_id INT,
+    FOREIGN KEY (city_id) REFERENCES City(id),
+    FOREIGN KEY (resident_id) REFERENCES Resident(id)
+);

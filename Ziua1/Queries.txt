@@ -1,0 +1,38 @@
+use info;
+
+SELECT * 
+FROM City;
+
+SELECT name 
+FROM Resident 
+ORDER BY name ASC;
+
+SELECT * 
+FROM City 
+WHERE LOWER(name) LIKE "r%" OR name LIKE "g%" OR name LIKE "m%" 
+ORDER BY name DESC;
+
+SELECT country.id, country_details.population 
+FROM Country INNER JOIN Country_details ON country_details.id = country.country_details 
+WHERE population > 1000000;
+
+
+SELECT country.id, country_details.population 
+FROM Country INNER JOIN Country_details ON Country_details.id = country.country_details 
+WHERE population > 500000 AND population < 1000000 AND population % 2 = 0;
+
+SELECT name 
+FROM Resident 
+WHERE birth_date > "1999-01-01" AND birth_date < "2005-01-01";
+
+SELECT resident.name, parting.city_id, city.name, country.id, country_details.population, country_details.climate_type
+FROM Resident
+JOIN Parting
+JOIN city
+JOIN country
+JOIN country_details
+ON parting.resident_id = resident.id
+    AND parting.city_id = city.id
+    AND city.country = country.id
+    AND country.country_details = parting.id
+WHERE resident.name = 'Mirela Crina'
