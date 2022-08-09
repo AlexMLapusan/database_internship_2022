@@ -1,0 +1,39 @@
+INSERT INTO show_table VALUES (null, 'The Bing Bang Theory', 8.2, '2007-09-24',1,1)
+INSERT INTO director VALUES (null,'Chuck Lorre','1952-10-18', 2)
+INSERT INTO streaming_platform VALUES(null, 'FSOnline','filmeserialeonline.org')
+
+INSERT INTO genre VALUES(null, 'drama','an angry dispute or scene')
+INSERT INTO show_genre VALUES(null, 8,4);
+
+Queries:
+
+	1. SELECT * FROM show_table ORDER BY nume asc, rating desc LIMIT 3 OFFSET 3; 
+	2. SELECT * FROM show_table WHERE nume LIKE 'G%' AND NOT nume LIKE '%ame of thrones';
+	3. SELECT COUNT(id) AS number, nume, rating FROM show_table GROUP BY rating;
+	5. SELECT show_table.nume,show_table.rating FROM show_table INNER JOIN show_genre ON show_genre.id_show = show_table.id 
+	   INNER JOIN genre ON genre.id = show_genre.id_genre WHERE genre.nume = 'comedy';
+	6. DELETE FROM show_table WHERE show_table.id = (SELECT id_show FROM show_genre INNER JOIN genre ON show_genre.id_genre = genre.id 
+         WHERE genre.nume = 'drama');
+	7. Rollback-ul nu se poate realiza dupa o operatie de stergere din baza de date. Datele sterse se pot recupera doar daca exista o 
+	   copie de rezerva. Daca nu există o copie de rezerva, atunci nu exista nicio modalitate de restaurare, deoarece interogarile 
+         de stergere sunt comise automat odata ce se declanseaza interogarea de stergere.
+      8. UPDATE show_table SET rating = rating + 1 WHERE id = (SELECT id_show FROM show_genre INNER JOIN genre ON 
+         genre.id = show_genre.id_genre WHERE genre.nume = 'romance')
+      9. SELECT nume, shows FROM director WHERE shows > 1;
+      10. CREATE TRIGGER `after_insert_show` AFTER INSERT ON `show_table`
+ 	   FOR EACH ROW UPDATE director SET shows = shows+1 
+	   WHERE NEW.id_director=director.id
+      11. SELECT shows, data_nasterii, TIMESTAMPDIFF(YEAR, data_nasterii, CURDATE()) AS age, nume FROM director ORDER BY shows, age, nume;
+      12. SELECT streaming_platform.nume,COUNT(streaming_platform.id) as number_of_shows FROM streaming_platform INNER JOIN show_table ON 
+          streaming_platform.id = show_table.id_platform GROUP BY streaming_platform.nume;
+      13. SELECT concat('The director ', director.nume, 'aged ', TIMESTAMPDIFF(YEAR, director.data_nasterii, CURDATE()), 
+          ' released ', show_table.nume,' in ',show_table.release_date) FROM director INNER JOIN show_table ON director.id = show_table.id_director 
+          WHERE TIMESTAMPDIFF(YEAR, director.data_nasterii, CURDATE()) < (SELECT AVG(TIMESTAMPDIFF(YEAR, data_nasterii, CURDATE())) 
+          FROM director);
+      14. SELECT genre.nume, streaming_platform.nume, COUNT(show_table.id_platform) as counts FROM streaming_platform INNER JOIN 
+          show_table ON streaming_platform.id = show_table.id_platform INNER JOIN show_genre ON show_table.id = show_genre.id_show 
+          INNER JOIN genre ON genre.id = show_genre.id_genre GROUP BY genre.nume, streaming_platform.nume;
+	15. SELECT nume, rating, TIMESTAMPDIFF(YEAR, release_date, CURDATE()) as release_age FROM show_table ORDER BY 
+          IF(rating IS NULL, release_age, rating);
+
+
