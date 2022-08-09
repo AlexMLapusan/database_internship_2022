@@ -11,9 +11,10 @@ SELECT rating, COUNT(*)
 FROM tv_show
 GROUP BY rating;
 
-/*SELECT rating
-FROM tv_show
-GROUP BY */
+SELECT COUNT(*), CONCAT("[", (FLOOR(s.rating/2) * 2), ", ", ((FLOOR(s.rating/2) * 2) + 2), ")") AS ratingGroup
+FROM tv_show s
+GROUP BY ratingGroup;
+
 
 SELECT s.name
 FROM tv_show s
