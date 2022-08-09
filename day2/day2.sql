@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Aug 09, 2022 at 08:34 AM
+-- Generation Time: Aug 09, 2022 at 09:04 AM
 -- Server version: 5.7.36
 -- PHP Version: 7.4.26
 
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `show_genre` (
   PRIMARY KEY (`ID`),
   KEY `showID` (`showID`),
   KEY `genreID` (`genreID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `show_genre`
@@ -99,7 +99,8 @@ INSERT INTO `show_genre` (`ID`, `showID`, `genreID`) VALUES
 (5, 8, 1),
 (6, 2, 5),
 (7, 6, 1),
-(8, 10, 5);
+(8, 10, 5),
+(9, 11, 2);
 
 -- --------------------------------------------------------
 
@@ -142,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `tv_show` (
   PRIMARY KEY (`ID`),
   KEY `directorID` (`directorID`),
   KEY `streaming_platformID` (`streaming_platformID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tv_show`
@@ -156,7 +157,8 @@ INSERT INTO `tv_show` (`ID`, `name`, `rating`, `release_date`, `directorID`, `st
 (7, 'Manifest', 7.9, '2019-08-22', 1, 1),
 (8, 'The Big Bang Theory', 7.2, '2002-07-15', 3, 2),
 (9, 'Romanii au talent', 5.9, '2012-05-07', 3, 4),
-(10, 'Exam', 8.2, '2013-06-06', 5, 2);
+(10, 'Exam', 8.2, '2013-06-06', 5, 2),
+(11, 'Gilmore Girls', 7.2, '2003-04-21', 3, 1);
 
 --
 -- Constraints for dumped tables
