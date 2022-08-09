@@ -35,11 +35,11 @@ Queries:
 3. select count(id), rating from show_table GROUP by rating;
 4.
 5. select show_table.name from show_table INNER join show_genre on show_table.id=show_genre.id_show INNER join genre on show_genre.id_genre=genre.id and genre.name="comedy"
-6. delete from genre WHERE name="drama"
+6. delete from genre WHERE name="drama" ???
 7. yes, BUT ONLY before a commit is done. Can't rollback data that has been commited in the db with the help of commit kewword
 8. select show_table.name, truncate(show_table.rating+1, 2) from show_table inner join show_genre on show_table.id = show_genre.id_show INNER join genre on genre.id=show_genre.id_genre and genre.name="romance"
 9. select name, shows_directed from director where shows_directed>1;
-10. 
+10. UPDATE director SET shows_directed = (SELECT COUNT(*) as number FROM show_table WHERE id_director=director.id);
 11. select name, birthdate, shows_directed from director order by shows_directed, birthdate, name;
 12. select streaming_platform.name, count(streaming_platform.id) from streaming_platform INNER JOIN show_table on streaming_platform.id=show_table.id_platform GROUP by streaming_platform.name
 13. select concat('The Director ', director.name, ' aged ', timestampdiff(year, director.birthdate, curdate()), ' released ', show_table.name, ' in ', show_table.release_date) as column_ from show_table INNER JOIN director on show_table.id_director=director.id 
