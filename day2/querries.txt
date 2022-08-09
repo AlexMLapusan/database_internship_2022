@@ -1,0 +1,95 @@
+select * from shows
+order by shows.rating desc, shows.name asc
+limit 3 offset 3;
+
+SELECT lower(shows.name) from shows where
+lower(shows.name) LIKE 'g%' AND lower(shows.name) NOT LIKE '%ame of thrones'
+order by shows.name asc;
+
+select shows.rating, COUNT(shows.name) from shows
+group by rating desc;
+
+select shows.rating, COUNT(shows.name) from shows
+WHERE rating >= 0 AND rating < 2 
+OR rating >= 2 AND rating < 4 
+OR rating >= 4 AND rating < 6 
+OR rating >= 6 AND rating < 8 
+OR rating >= 8 AND rating < 10
+group by rating desc;
+
+select shows.name from shows
+join show_genre on show_genre.show_id = shows.id
+join genre on genre.id = show_genre.genre_id
+where genre.name = 'comedy';
+
+delete shows from shows 
+join show_genre on show_genre.show_id = shows.id
+join genre on show_genre.genre_id = genre.id
+where genre.name = 'drama';
+
+Rollback normally won't work on these delete functions and 
+surely a backup only can save you. If there is no backup then 
+there is no way to restore it as delete queries ran on PuTTY,Derby 
+using . sql files are auto committed once you fire the delete query.
+
+update shows
+join show_genre on show_genre.show_id = shows.id
+join genre on show_genre.genre_id = genre.id
+set shows.rating = shows.rating + 1.00
+where genre.name = 'romance';
+
+select director.name, director.shows from director
+join shows on shows.director_id = director.id
+where director.shows > 1
+group by director.name
+
+DELIMITER $$
+
+create trigger insert_show 
+AFTER INSERT 
+ON shows FOR EACH ROW
+BEGIN
+	UPDATE director SET director.shows = director.shows + 1
+	JOIN director ON director.id = shows.director_id
+END$$
+
+DELIMITER ;
+
+select director.name, director.shows, (YEAR(CURRENT_DATE) - YEAR(director.birth_date)) as years from director
+ORDER BY director.shows desc, years desc, director.name asc;
+
+select streaming_platform.name, count(shows.id) from shows
+join streaming_platform on streaming_platform.id = shows.platform_id
+group by streaming_platform.name;
+
+create view directors_age as
+select director.name, (YEAR(CURRENT_DATE) - YEAR(director.birth_date)) as years from director
+ORDER BY years desc, director.name asc;
+
+select director.name as 'The Director', 
+YEAR(CURRENT_DATE) - YEAR(director.birth_date) as 'aged', 
+shows.name as 'released',
+shows.release_date as 'in'
+from director
+join shows on shows.director_id = director.id
+where (YEAR(CURRENT_DATE) - YEAR(director.birth_date)) < (
+	select avg(years) from directors_age
+)
+order by shows.release_date asc;
+
+select genre.name as 'genre', streaming_platform.name as 'platform', count(genre.id) from streaming_platform
+join shows on shows.platform_id = streaming_platform.id
+join show_genre on show_genre.show_id = shows.id
+join genre on genre.id = show_genre.genre_id
+group by genre.name asc, streaming_platform.name asc
+order by streaming_platform.name asc, genre.name asc
+
+select shows.name, shows.rating, shows.release_date from shows
+order by shows.rating desc, 
+	case 
+    	when shows.rating is null then shows.release_date 
+    end asc;
+
+update director
+join shows on director.id = shows.director_id
+set director.score = 0;

@@ -1,0 +1,43 @@
+create table if not exists shows(
+    id int primary key auto_increment not null,
+    name varchar(100),
+    rating numeric(3, 1),
+    release_date date,
+    director_id int,
+    platform_id int,
+    foreign key (director_id) references director(id),
+    foreign key (platform_id) references streaming_platform(id)
+);
+
+create table if not exists director(
+    id int primary key auto_increment not null,
+    name varchar(100),
+    birth_date date,
+    shows int
+);
+
+create table if not exists genre(
+    id int primary key auto_increment not null,
+    name varchar(100),
+    description varchar(100)
+);
+
+create table if not exists show_genre(
+    genre_id int,
+    show_id int,
+    primary key (genre_id, show_id),
+    foreign key (genre_id) references genre(id),
+    foreign key (show_id) references shows(id)
+);
+
+create table if not exists streaming_platform(
+    id int primary key auto_increment not null,
+    name varchar(100),
+    domain varchar(100)
+);
+
+alter table shows ENGINE = INNODB;
+alter table director ENGINE = INNODB;
+alter table genre ENGINE = INNODB;
+alter table streaming_platform ENGINE = INNODB;
+alter table show_genre ENGINE = INNODB;
