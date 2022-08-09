@@ -1,0 +1,60 @@
+use db_training;
+
+#Ex1
+SELECT name, rating
+FROM Shows
+ORDER BY rating DESC, name ASC
+LIMIT 3 OFFSET 3;
+
+#Ex2
+SELECT name
+FROM Shows
+WHERE LOWER(name) LIKE 'g%' 
+AND LOWER(name) NOT LIKE '%ame of thrones';
+
+#Ex3
+SELECT Count(name), rating
+FROM Shows
+GROUP BY rating;
+
+#Ex4
+SELECT COUNT(name), CONCAT((FLOOR(rating / 2) * 2), '-', (FLOOR(rating / 2) * 2) + 2) as 'ranges'
+FROM Shows
+GROUP BY ranges
+ORDER BY ranges DESC;
+
+#Ex5
+SELECT s1.name
+FROM Shows as s1 INNER JOIN Shows_Genre AS s2 ON s1.id = s2.show_id
+INNER JOIN Genre AS g ON g.id = s2.genre_id
+WHERE LOWER(g.name) LIKE 'comedy';
+
+#Ex6
+DELETE s.* FROM Shows AS s
+	INNER JOIN Shows_genre AS sg
+ 	INNER JOIN Genre AS g
+	ON( s.id = sg.show_id AND sg.genre_id = g.id)
+WHERE g.name LIKE 'comedy';
+
+#7
+#Facut in fisierul separat
+
+#8
+SELECT s.name, TRUNCATE(s.rating + 1, 2) AS 'new_rating'
+FROM SHOWS AS s INNER JOIN Shows_genre AS sg
+				INNER JOIN Genre AS g
+                ON (s.id = sg.show_id AND sg.genre_id = g.id)
+WHERE g.name LIKE 'romance';
+
+#9
+SELECT name, no_shows
+FROM Director
+WHERE no_shows > 1;
+
+#14
+SELECT g.name, sp.name, COUNT(sp.name) AS 'counts' 
+FROM SHOWS AS s INNER JOIN Genre AS g
+				INNER JOIN Shows_genre AS sg
+                INNER JOIN Streaming_platform AS sp
+                ON (g.id = sg.genre_id AND sg.show_id = s.id AND sp.id = s.streaming_platform_id)
+GROUP BY g.name, sp.name;

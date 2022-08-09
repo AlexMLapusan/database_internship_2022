@@ -1,0 +1,2 @@
+Normal nu se poate, dar daca dam SET AUTOCOMMIT=0, se poate face rollback, dar dupa trebuie commit dupa fiecare query. Normal acesta automat setat pe 1 si daca nu este facut backup nu
+se poate recupera.
