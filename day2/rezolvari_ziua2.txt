@@ -1,0 +1,45 @@
+1)
+SELECT name FROM shows ORDER BY raiting LIMIT 3 OFFSET 3;
+2)
+SELECT name FROM shows WHERE name LIKE 'G%' AND name NOT LIKE '%ame of thrones'; 
+3)
+SELECT raiting, COUNT(*) FROM shows GROUP BY raiting;
+5)
+SELECT shows.name, genre.name FROM genre 
+JOIN show_genre
+JOIN shows
+ON genre.id = show_genre.genre_id 
+	AND show_genre.show_id = shows.id
+WHERE genre.name LIKE 'comedy%' OR genre.name LIKE '%comedy';
+6)
+DELETE FROM shows 
+WHERE id in (
+SELECT show_genre.show_id FROM show_genre
+JOIN genre
+ON genre.id = show_genre.genre_id 
+WHERE genre.name LIKE 'drama%' OR genre.name LIKE '%drama');
+7)
+You cannot rollback in this case, but when you are using the Full Recovery Model, then you can turn your database back to the moment before you issued the delete command.
+You can roll back DELETE or TRUNCATE (and most other operations) if and only if they are part of a transaction that's not yet committed. Alternatively you could restore the deleted/truncated data from a backup.
+8)
+UPDATE shows 
+SET shows.raiting = shows.raiting + 1
+WHERE id in (
+    SELECT show_genre.show_id FROM show_genre
+    JOIN genre ON genre.id = show_genre.genre_id 
+    WHERE genre.name LIKE 'comedy%' OR genre.name LIKE '%comedy');
+9)
+SELECT name FROM director WHERE number_show_directed > 1;
+10)
+UPDATE director
+SET director.number_show_directed = (
+    SELECT COUNT(*)
+    FROM shows 
+    WHERE shows.director_id = director.id)
+11)
+SELECT name FROM director ORDER BY number_show_directed, date_birth, name;
+12)
+SELECT platform.name, COUNT(*) 
+FROM shows 
+JOIN platform ON platform.id = shows.platform_id
+GROUP BY platform_id
