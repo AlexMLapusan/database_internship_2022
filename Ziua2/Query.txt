@@ -51,6 +51,31 @@ SELECT name, no_shows
 FROM Director
 WHERE no_shows > 1;
 
+#Ex10
+UPDATE Director AS d SET no_shows =
+						(SELECT COUNT(*)
+                         FROM Shows AS s
+                         WHERE s.director_id = d.id);
+                         
+#Ex11
+SELECT name, no_shows, birth_date
+FROM Director
+ORDER BY no_shows DESC, birth_date ASC, name ASC;
+
+#Ex12
+SELECT *, (SELECT COUNT(*)
+           FROM Shows AS s
+           WHERE s.streaming_platform_id = sp.id) AS 'counts'
+FROM Streaming_platform AS sp;
+
+#Ex13
+SELECT CONCAT('The Director ', d.name, ' aged ', ROUND(DATEDIFF(NOW(), d.birth_date) / 365.0),
+              ' released ', s.name, ' in ', s.release_date) AS 'cerinta'
+FROM Director AS d INNER JOIN Shows AS s ON d.id = s.director_id
+WHERE ROUND(DATEDIFF(NOW(), d.birth_date) / 365.0) < (SELECT AVG(ROUND(DATEDIFF(NOW(), d1.birth_date) / 365.0))
+               										  FROM Director AS d1)
+ORDER BY d.birth_date;
+
 #14
 SELECT g.name, sp.name, COUNT(sp.name) AS 'counts' 
 FROM SHOWS AS s INNER JOIN Genre AS g
@@ -58,3 +83,46 @@ FROM SHOWS AS s INNER JOIN Genre AS g
                 INNER JOIN Streaming_platform AS sp
                 ON (g.id = sg.genre_id AND sg.show_id = s.id AND sp.id = s.streaming_platform_id)
 GROUP BY g.name, sp.name;
+
+#Ex15
+SELECT *, ROUND(DATEDIFF(NOW(), s.release_date) / 365.0) AS 'age'
+FROM Shows AS s
+ORDER BY IF(s.rating IS NOT NULL, rating, age);
+
+#Ex16
+A facut Ionut ceva cu o tabela noua. Ne-a placut varianta aia
+
+#Ex17
+CREATE TABLE `general_log` (
+   `event_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+                          ON UPDATE CURRENT_TIMESTAMP,
+   `user_host` mediumtext NOT NULL,
+   `thread_id` bigint(21) unsigned NOT NULL,
+   `server_id` int(10) unsigned NOT NULL,
+   `command_type` varchar(64) NOT NULL,
+   `argument` mediumtext NOT NULL
+  ) ENGINE=CSV DEFAULT CHARSET=utf8 COMMENT='General log';
+
+CREATE TABLE `slow_log` (
+   `start_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP 
+                          ON UPDATE CURRENT_TIMESTAMP,
+   `user_host` mediumtext NOT NULL,
+   `query_time` time NOT NULL,
+   `lock_time` time NOT NULL,
+   `rows_sent` int(11) NOT NULL,
+   `rows_examined` int(11) NOT NULL,
+   `db` varchar(512) NOT NULL,
+   `last_insert_id` int(11) NOT NULL,
+   `insert_id` int(11) NOT NULL,
+   `server_id` int(10) unsigned NOT NULL,
+   `sql_text` mediumtext NOT NULL,
+   `thread_id` bigint(21) unsigned NOT NULL
+  ) ENGINE=CSV DEFAULT CHARSET=utf8 COMMENT='Slow log';
+
+SET global general_log = 1;
+SET global log_output = 'table';
+
+SELECT *
+FROM mysql.general_log
+WHERE command_type='Query'
+AND UPPER(argument) LIKE 'DELETE%';
